@@ -14,7 +14,7 @@ jobs:
     - name: 🚀 Submit to TIRA
       run: |
         # TIRA CLI installieren
-        pip install tira-cli
+        pip3 install tira
         
         tira-cli code-submission \
           --path . \
