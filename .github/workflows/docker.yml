@@ -1,8 +1,10 @@
 name: Test
 on:
-  push:
-    paths:
-      - 'clef26/generated-plagiarism-detection/baseline-pyterrier/baseline.py'
+  workflow_call:
+    inputs:
+      workdir:
+        required: true
+        type: string
   
 jobs:
   tira-submit:
@@ -10,14 +12,15 @@ jobs:
     steps:
     - name: 📥 Checkout
       uses: actions/checkout@v4
-
+      
     - name: 🚀 Submit to TIRA
+      working-directory: ${{ inputs.workdir }}
       run: |
-        pip install tira
+        pip3 install tira
         
         tira-cli code-submission \
           --path . \
           --task pan26-generated-plagiarism-detection \
           --dataset spot-check-dataset-20260227-training \
-          --command '/baseline.py --dataset $inputDataset --index /tmp/indexes --output $outputDir' \
+          --command '/baseline.py --dataset $inputDataset --index /tmp/indexes --output $outputDir'\
           --dry-run
